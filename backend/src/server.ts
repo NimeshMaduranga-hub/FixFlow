@@ -1,6 +1,7 @@
 
 import express from "express";
 import cors from "cors";
+import connectDB from "./config/database.js";
 
 const app = express();
 
@@ -13,9 +14,15 @@ app.get("/", (req, res) => {
 });
 
 // Server Port
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`FixFlow Server running on port ${PORT}`);
-});
+// Start Server after Database Connection
+const startServer = async () => {
+    await connectDB();
+
+    app.listen(PORT, () => {
+        console.log(`FixFlow Server running on port ${PORT}`);
+    });
+};
+
+startServer();
